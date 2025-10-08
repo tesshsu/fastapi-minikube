@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.env
+*.venv
+env/
+venv/
+ENV/
+*.egg-info/
+dist/
+build/
+
+# Docker
+*.log
+*.pid
+*.seed
+*.pid.lock
+docker-compose.override.yml
+
+# Kubernetes
+*.yaml~
+*.yml~
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# OS Files
+.DS_Store
+Thumbs.db
