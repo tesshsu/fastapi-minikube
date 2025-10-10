@@ -17,6 +17,10 @@ This project demonstrates how to deploy a simple FastAPI application on Kubernet
 ```
 
 fastapi-minikube/
+├── /k8s
+├──  └── configmap-secret.yml 
+├── /scripts
+├──  └── configmap-secret-demp.sh 
 ├── main.py              # FastAPI application
 ├── requirements.txt     # Python dependencies
 ├── Dockerfile           # Docker build configuration

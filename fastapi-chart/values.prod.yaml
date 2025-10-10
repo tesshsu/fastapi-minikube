@@ -1,0 +1,7 @@
+replicaCount: 3
+image:
+  tag: prod
+config:
+  DEMO_MESSAGE: "Hello from PRODUCTION"
+secrets:
+  SECRET_KEY: "prod-secret-key-demo"
