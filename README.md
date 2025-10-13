@@ -23,15 +23,12 @@ fastapi-minikube/
 ├── fastapi-chart/                    # Helm chart directory
 │   ├── charts/                       # Chart dependencies
 │   ├── templates/                    # Kubernetes manifest templates
-│   │   ├── tests/                    # Helm test templates
 │   │   ├── _helpers.tpl              # Template helpers
 │   │   ├── configmap.yaml            # ConfigMap template
 │   │   ├── deployment.yaml           # Deployment template
-│   │   ├── hpa.yaml                  # HorizontalPodAutoscaler template
 │   │   ├── ingress.yaml              # Ingress template
-│   │   ├── secret.yaml               # Secret template (Sealed Secrets)
-│   │   ├── service.yaml              # Service template
-│   │   └── serviceaccount.yaml       # ServiceAccount template
+│   │   ├── sealedsecret.yaml               # Secret template (Sealed Secrets)
+│   │   └── service.yaml              # Service template
 │   ├── Chart.yaml                    # Helm chart metadata
 │   ├── values.yaml                   # Default values
 │   ├── values.dev.yaml               # Development environment values
@@ -39,8 +36,11 @@ fastapi-minikube/
 ├── k8s/                              # Plain Kubernetes manifests
 │   └── configmap-secret.yml          # ConfigMap and Secret examples
 ├── scripts/                          # Utility scripts
-│   └── configmap-secret-demo.sh      # Demo script for secrets
-
+│   ├── configmap-secret-demo.sh      # Demo script for secrets
+│   ├── sealed-secret-demo.sh         # ✅ FIXED - Demo script
+│   ├── create-sealed-secret.sh       # 🆕 NEW - Production script
+│   ├── helm-deploy.sh                # Deploy with Helm
+│   └── cleanup.sh                    # Cleanup script
 ├── main.py                           # FastAPI application
 ├── requirements.txt                  # Python dependencies
 ├── Dockerfile                        # Docker build configuration
