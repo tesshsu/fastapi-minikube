@@ -24,3 +24,24 @@ sealedSecrets:
 #       secretKeyRef:
 #         name: {{ include "fastapi-chart.fullname" . }}-sealed-secret
 #         key: PASSWORD
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  enabled: true
+  hosts:
+    - host: fastapi.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+replicaCount: 1
+
+autoscaling:
+  enabled: false   # usually off in dev
+
+image:
+  repository: myusername/fastapi-demo
+  tag: "dev-latest"

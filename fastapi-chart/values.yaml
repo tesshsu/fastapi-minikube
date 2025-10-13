@@ -24,3 +24,42 @@ sealedSecrets:
 #       secretKeyRef:
 #         name: {{ include "fastapi-chart.fullname" . }}-sealed-secret
 #         key: PASSWORD
+service:
+  type: ClusterIP   # or NodePort / LoadBalancer
+  port: 80          # target port inside the service
+
+ingress:
+  enabled: false        # default false
+  hosts:
+    - host: fastapi.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+replicaCount: 1
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
+
+image:
+  repository: myusername/fastapi-demo      # <-- required!
+  tag: "0.1.0"
+  pullPolicy: IfNotPresent
+
+# Optional probes
+livenessProbe:
+  httpGet:
+    path: /health
+    port: 8000
+readinessProbe:
+  httpGet:
+    path: /ready
+    port: 8000
+
+# SealedSecrets example
+sealedSecrets:
+  enabled: false
+  encryptedData: {}
