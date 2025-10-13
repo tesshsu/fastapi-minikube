@@ -39,6 +39,7 @@ Thumbs.db
 *.pem
 mysecret.yaml
 mycert.pem
-mysealedsecret.yaml
+sealedsecret.yaml
+test-pod.yaml
 **/secrets/*.yaml       # if you keep local plaintext before sealing
 **/secret*.yaml         # any temporary files

@@ -1,7 +1,26 @@
-replicaCount: 3
-image:
-  tag: prod
-config:
-  DEMO_MESSAGE: "Hello from PRODUCTION"
-secrets:
-  SECRET_KEY: "prod-secret-key-demo"
+# Add this to your values.yaml, values.dev.yaml, and values.prod.yaml
+
+# Sealed Secrets Configuration
+sealedSecrets:
+  enabled: false  # Set to true when you have sealed secrets
+  # The encryptedData will be populated by running the sealed-secret-demo.sh script
+  # or you can manually paste encrypted values here
+  encryptedData: {}
+    # Example (these are encrypted values, safe to commit):
+    # USERNAME: AgBX8V9k...encrypted-data...
+    # PASSWORD: AgCY2Mk...encrypted-data...
+    # API_KEY: AgDZ3Nl...encrypted-data...
+
+# If you want to use the sealed secrets in your deployment, add this:
+# In your deployment.yaml template, reference the secret like this:
+# env:
+#   - name: DB_USERNAME
+#     valueFrom:
+#       secretKeyRef:
+#         name: {{ include "fastapi-chart.fullname" . }}-sealed-secret
+#         key: USERNAME
+#   - name: DB_PASSWORD
+#     valueFrom:
+#       secretKeyRef:
+#         name: {{ include "fastapi-chart.fullname" . }}-sealed-secret
+#         key: PASSWORD

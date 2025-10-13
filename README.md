@@ -180,8 +180,8 @@ kubectl -n kube-system get pods -l app.kubernetes.io/name=sealed-secrets
 Use the demo script to create sealed secrets:
 
 ```bash
-chmod +x scripts/configmap-secret-demo.sh
-./scripts/configmap-secret-demo.sh
+chmod +x scripts/sealed-secret-demo.sh
+./scripts/sealed-secret-demo.sh
 ```
 
 This will:
