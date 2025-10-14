@@ -1,129 +1,65 @@
-# Default values for fastapi-chart.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
+# Add this to your values.yaml, values.dev.yaml, and values.prod.yaml
 
-# This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
-replicaCount: 1
+# Sealed Secrets Configuration
+sealedSecrets:
+  enabled: false  # Set to true when you have sealed secrets
+  # The encryptedData will be populated by running the sealed-secret-demo.sh script
+  # or you can manually paste encrypted values here
+  encryptedData: {}
+    # Example (these are encrypted values, safe to commit):
+    # USERNAME: AgBX8V9k...encrypted-data...
+    # PASSWORD: AgCY2Mk...encrypted-data...
+    # API_KEY: AgDZ3Nl...encrypted-data...
 
-# This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
-image:
-  repository: nginx
-  # This sets the pull policy for images.
-  pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: "latest"
-
-# This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
-imagePullSecrets: []
-# This is to override the chart name.
-nameOverride: ""
-fullnameOverride: ""
-
-# This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
-serviceAccount:
-  # Specifies whether a service account should be created
-  create: true
-  # Automatically mount a ServiceAccount's API credentials?
-  automount: true
-  # Annotations to add to the service account
-  annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
-  name: ""
-
-# This is for setting Kubernetes Annotations to a Pod.
-# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
-podAnnotations: {}
-# This is for setting Kubernetes Labels to a Pod.
-# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
-podLabels: {}
-
-podSecurityContext: {}
-  # fsGroup: 2000
-
-securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
-
-# This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
+# If you want to use the sealed secrets in your deployment, add this:
+# In your deployment.yaml template, reference the secret like this:
+# env:
+#   - name: DB_USERNAME
+#     valueFrom:
+#       secretKeyRef:
+#         name: {{ include "fastapi-chart.fullname" . }}-sealed-secret
+#         key: USERNAME
+#   - name: DB_PASSWORD
+#     valueFrom:
+#       secretKeyRef:
+#         name: {{ include "fastapi-chart.fullname" . }}-sealed-secret
+#         key: PASSWORD
 service:
-  # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
-  type: ClusterIP
-  # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
-  port: 80
+  type: ClusterIP   # or NodePort / LoadBalancer
+  port: 80          # target port inside the service
 
-# This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
-  enabled: true
-  className: "nginx"
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
+  enabled: false        # default false
   hosts:
     - host: fastapi.local
       paths:
         - path: /
           pathType: Prefix
   tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+replicaCount: 1
 
-config:
-  DEMO_MESSAGE: "Bonjour depuis ConfigMap"
-
-secrets:
-  SECRET_KEY: "super-secret"
-
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
-
-# This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
-livenessProbe:
-  httpGet:
-    path: /
-    port: http
-readinessProbe:
-  httpGet:
-    path: /
-    port: http
-
-# This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
 autoscaling:
   enabled: false
   minReplicas: 1
-  maxReplicas: 100
+  maxReplicas: 3
   targetCPUUtilizationPercentage: 80
-  # targetMemoryUtilizationPercentage: 80
 
-# Additional volumes on the output Deployment definition.
-volumes: []
-# - name: foo
-#   secret:
-#     secretName: mysecret
-#     optional: false
+image:
+  repository: myusername/fastapi-demo      # <-- required!
+  tag: "0.1.0"
+  pullPolicy: IfNotPresent
 
-# Additional volumeMounts on the output Deployment definition.
-volumeMounts: []
-# - name: foo
-#   mountPath: "/etc/foo"
-#   readOnly: true
+# Optional probes
+livenessProbe:
+  httpGet:
+    path: /health
+    port: 80
+readinessProbe:
+  httpGet:
+    path: /ready
+    port: 80
 
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
+# SealedSecrets example
+sealedSecrets:
+  enabled: false
+  encryptedData: {}

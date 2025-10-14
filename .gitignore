@@ -34,3 +34,12 @@ docker-compose.override.yml
 # OS Files
 .DS_Store
 Thumbs.db
+
+# Ignore plaintext secrets
+*.pem
+mysecret.yaml
+mycert.pem
+sealedsecret.yaml
+test-pod.yaml
+**/secrets/*.yaml       # if you keep local plaintext before sealing
+**/secret*.yaml         # any temporary files
