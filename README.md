@@ -34,7 +34,9 @@ fastapi-minikube/
 │   ├── values.dev.yaml               # Development environment values
 │   └── values.prod.yaml              # Production environment values
 ├── k8s/                              # Plain Kubernetes manifests
-│   └── configmap-secret.yml          # ConfigMap and Secret examples
+│   ├──configmap-secret.yml
+│   ├── deployment.yml 
+│   └── ingress.yml     
 ├── scripts/                          # Utility scripts
 │   ├── configmap-secret-demo.sh      # Demo script for secrets
 │   ├── sealed-secret-demo.sh         # ✅ FIXED - Demo script
@@ -44,8 +46,6 @@ fastapi-minikube/
 ├── main.py                           # FastAPI application
 ├── requirements.txt                  # Python dependencies
 ├── Dockerfile                        # Docker build configuration
-├── deployment.yml                    # K8s Deployment + Service (standalone)
-├── ingress.yml                       # K8s Ingress configuration (standalone)
 └── README.md                         # This file
 ```
 
